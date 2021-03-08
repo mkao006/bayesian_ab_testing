@@ -9,12 +9,12 @@ class ProportionTrafficGenerator():
                  N: torch.tensor,
                  p: torch.tensor,
                  traffic_size: torch.tensor,                 
-                 variant_proportion: torch.tensor):
+                 treatment_proportion: torch.tensor):
         self.N = N
         self.p = p        
         self.traffic_size = traffic_size
-        self.variant_proportion = variant_proportion
-        self.control_size = (self.traffic_size * (1 - self.variant_proportion)).floor()
+        self.treatment_proportion = treatment_proportion
+        self.control_size = (self.traffic_size * (1 - self.treatment_proportion)).floor()
         self.variant_size = self.traffic_size - self.control_size
         self.split_traffic_size = torch.stack([self.control_size, self.variant_size])
 
