@@ -8,6 +8,7 @@ https://www.evanmiller.org/bayesian-ab-testing.html
 
 '''
 
+
 from abc import ABC, abstractmethod
 from typing import Callable
 from functools import partial
@@ -25,7 +26,6 @@ from pyro.infer import (
 import matplotlib.pyplot as plt
 import seaborn as sns
 plt.style.use('ggplot')
-
 
 
 class BayesianTester(ABC):
@@ -46,7 +46,7 @@ class BayesianTester(ABC):
 
     def improvement_probability(self) -> float:
         pass
-    
+
     def loss(self, a, b) -> int:
         return np.maximum(a - b, 0)
 
@@ -105,7 +105,7 @@ class BayesianBinaryTester(BayesianTester):
                           fill=True,
                           levels=10)
         minimum = min([i.min() for i in self.posterior_samples.values()])
-        maximum = min([i.min() for i in self.posterior_samples.values()])        
+        maximum = max([i.max() for i in self.posterior_samples.values()])
         g.ax_marg_x.set_xlim(minimum, maximum)
         g.ax_marg_y.set_ylim(minimum, maximum)
         x0, x1 = g.ax_joint.get_xlim()
@@ -114,14 +114,12 @@ class BayesianBinaryTester(BayesianTester):
         g.ax_joint.plot(lims, lims, ':k')
         plt.show()
 
-
     def plot_posterior(self) -> None:
         posterior_melted_df = pd.melt(pd.DataFrame(self.posterior_samples))
         sns.kdeplot(data=posterior_melted_df, hue='variable', x='value')
         plt.show()
-        
+
+
 class BayesianCountTester(BayesianTester):
     def __init__(self, model):
         pass
-
-
