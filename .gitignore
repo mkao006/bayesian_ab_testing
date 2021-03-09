@@ -1,0 +1,29 @@
+# General
+*~
+*#*
+*.DS_Store
+*.Rhistory
+*.log
+*.pdf
+*.html
+
+# Data files and db
+*.pkl
+*.jsonl
+*.csv
+*.pyc
+*.npy
+*.joblib
+*.db
+*.feather
+*.rds
+checkpoints/
+*cache/
+*files/
+*.RData
+*catboost_info/
+*batch_*
+*.tar.gz
+
+# Python
+*.ipynb_checkpoints
