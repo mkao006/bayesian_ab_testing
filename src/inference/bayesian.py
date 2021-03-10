@@ -16,6 +16,7 @@ from functools import partial
 import numpy as np
 import pandas as pd
 import torch
+from torch import tensor
 import pyro
 import pyro.distributions as dist
 from pyro.infer import (
@@ -29,22 +30,15 @@ plt.style.use('ggplot')
 
 
 class BayesianTester(ABC):
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
+    @abstractmethod
     def model_generator(self) -> Callable:
         pass
 
+    @abstractmethod
     def run(self) -> None:
-        pass
-
-    def expected_loss_switch(self) -> float:
-        pass
-
-    def expected_loss_stay(self) -> float:
-        pass
-
-    def improvement_probability(self) -> float:
         pass
 
     def loss(self, a, b) -> int:
@@ -52,15 +46,19 @@ class BayesianTester(ABC):
 
 
 class BayesianBinaryTester(BayesianTester):
-    def __init__(self, outcome, traffic_size, warmup_steps=100, num_samples=1000):
+    def __init__(self,
+                 outcome: tensor,
+                 traffic_size: tensor,
+                 warmup_steps: int = 100,
+                 num_samples: int = 1000) -> None:
         pyro.clear_param_store()
         self.outcome = outcome
         self.traffic_size = traffic_size
-        self.model = self.model_generator()       
+        self.model = self.model_generator()
         self.kernel = NUTS(self.model)
         self.mcmc = MCMC(self.kernel, warmup_steps=warmup_steps, num_samples=num_samples)
 
-    def model_generator(self):
+    def model_generator(self) -> Callable:
         def _model_(self):
             control_prior = pyro.sample('control_p', dist.Beta(1, 1))
             treatment_prior = pyro.sample('treatment_p', dist.Beta(1, 1))
@@ -72,7 +70,7 @@ class BayesianBinaryTester(BayesianTester):
 
         return partial(_model_, self)
 
-    def run(self, n_samples=3000):
+    def run(self, n_samples=3000) -> None:
         self.mcmc.run()
         self.posterior_samples = self.mcmc.get_samples(n_samples)
 
