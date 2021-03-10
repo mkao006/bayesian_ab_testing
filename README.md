@@ -13,5 +13,7 @@ There are numerous advantage of the framework such as the following but not limi
 Resources:
 
 [Bayesian A/B Testing at VWO by Chris Stucchio](https://www.chrisstucchio.com/pubs/slides/gilt_bayesian_ab_2015/slides.html#1)
+
 [Formulas for Bayesian A/B Testing](https://www.evanmiller.org/bayesian-ab-testing.html)
+
 [IS Bayesian A/B Testing Immune to Peeking? Not Exactly](http://varianceexplained.org/r/bayesian-ab-testing/)
